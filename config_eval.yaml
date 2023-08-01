@@ -1,0 +1,169 @@
+scene: igibson
+scene_id: Rs_int
+
+
+build_graph: true
+load_texture: true
+pybullet_load_texture: true
+trav_map_type: no_obj
+trav_map_resolution: 0.1
+
+trav_map_erosion: 1
+should_open_all_doors: false
+
+# domain randomization
+texture_randomization_freq: null
+object_randomization_freq: null
+
+# robotc
+#collision_ignore_link_a_ids: [1, 2, 3, 4]  # ignore collisions with these robot links FOR LOCOBOT
+collision_ignore_link_a_ids: [0, 1, 2]  # ignore collisions with these robot links FOR FETCH
+#Locobot
+#linear_velocity : 0.5
+#angular_velocity: 1.0
+#Fetch
+angular_velocity: 2.0
+linear_velocity: 1.0
+robot:
+  name: Fetch
+  action_type: continuous
+  #action_normalize: true
+  scale: 0.85
+  self_collision: True
+
+
+# task
+task: point_nav_random
+target_dist_min: 3.0
+#3.5
+target_dist_max: 12.0
+goal_format: polar
+task_obs_dim: 4
+
+#indicates wether or not the observation space includes another entry for how many objects need to be explored
+tar_objects: 6
+replace_objects: false
+num_cabinets: 3
+num_door_colors: 4
+
+num_cracker: 3
+remove_doors: false
+min_episodes: 25
+history_length_aux: 16
+initial_aux_prob: 1.0
+
+#HRL TASK
+cracker_cabin_mixed: true
+#opencv show map
+show_map: true
+save_failed_eps: false
+evaluate: true
+softmax_annealing: false
+corrected_discounting: true
+once_opening: true
+increment_env_steps: true
+
+physically_simulated_openings: true
+animate: false
+add_frontier_exploration: true
+invalid_action_masking: true
+add_exploration_policy: true
+exploration_policy_steps: 4 #put 20 for max evaluation
+short_horizon_planning: false
+normalize_hl_history: true
+
+
+numb_hl_actions: 11.0
+num_waypoints_cut: 20
+reset_agent_pos: false
+multiple_envs: false
+resample_task: false
+#use in policy to correct for ll-policy observation space, last color denoted the marked color for cabinet objects
+cabinet_colors: [177,214,112,10]
+#cabinet_marked: [200, 200, 200]
+unknown_color: [95, 190, 45]
+cracker_colors: [102,126,140]
+category_found_color: [249, 192, 203]
+fr_point: 159
+fr_point_substitution: [255, 0, 0]
+#[253, 253, 253]
+
+grid_res: 0.033
+#change from 0.2 (default) to 0.1 => waypoints no big jumps
+waypoint_resolution: 0.1
+num_waypoints: 15
+#draw ground truth target on map
+#target_on_map: false
+#draw auxilliary prediction on map
+aux_on_map: true
+#-- a few mods --
+sem_categories: 6
+#using the ground truth already revealed map
+#use_ground_truth: false
+#use_seperate_map: false
+use_aux_task: true
+aux_loss_coeff: 0.06
+#Global map size
+global_map_size: 224
+#substitute polar obs-space input with previous aux pred.
+substitute_polar: true
+#set the distance in obs-space to zero (to neglect the one)
+set_polar_dist_zero: true
+#set local polar coordinates to the next geodesic distance
+polar_to_geodesic: true
+#not using any polar coordinates in obs-space
+not_polar: false
+
+# reward
+reward_type: geodesic
+#
+success_reward: 10.0
+potential_reward_weight: 1.0
+collision_reward_weight: -0.1
+
+# discount factor
+discount_factor: 0.99
+
+# termination condition
+#dist_tol: 1.45  # body width
+dist_tol: 1.3 # body width
+max_step: 1000
+max_collisions_allowed: 600
+#450
+
+
+# misc config
+initial_pos_z_offset: 0.1
+initial_pos_z_offset_for_grasp: 0.1
+
+collision_ignore_body_b_ids: [] # ignore collisions with these robot links FOR LOCOBOt
+#collision_ignore_link_a_ids: [6,9,2,3]  # ignore collisions with these robot links FOR HSR
+#collision_ignore_body_b_ids: [2,3,1] # ignore collisions with these robot links FOR HSR
+#266, 267,268,269,270,271,272,273,274,275,276,277,278,279,280,281,282,283,284,285]  # ignore collisions with these robot links
+# sensor spec
+#output: [task_obs, depth, seg]
+# image
+# ASUS Xtion PRO LIVE
+# https://www.asus.com/us/3D-Sensor/Xtion_PRO_LIVE
+fisheye: false
+image_width: 512  
+#160
+image_height: 512
+#120
+vertical_fov: 79.0
+#45.0
+# depth
+depth_low: 0.05 
+#0.005
+depth_high: 5.6
+
+
+# sensor noise
+depth_noise_rate: 0.0
+scan_noise_rate: 0.0
+load_object_categories:  [shelf, door, sofa, sink, table, window]
+#[shelf,sofa,sink,table]
+#
+# visual objects
+visual_object_at_initial_target_pos: true
+target_visual_object_visible_to_agent: false
