@@ -136,6 +136,10 @@ def main():
     discount_length_mean = []
     SPL = []
     ac_dist = [0.0]*12
+    
+    if not os.path.exists('eval_results'):
+        os.makedirs('eval_results')
+    
     with open(f'eval_results/{method}_seed{seed}_succ.txt', 'w') as f:
         f.write('')
         f.close()

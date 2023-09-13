@@ -1,0 +1,84 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.245.2/containers/python-3-anaconda
+{
+	"name": "igibson",
+	"build": {
+		"context": "..",
+		"dockerfile": "Dockerfile",
+		"args": {
+			"RLGITUSER": "todo",
+			"RLGITPWD": "todo"
+		}
+	},
+	"containerEnv": {
+		"GITHUB_TOKEN": "${localEnv:GITHUB_TOKEN}",
+		"GITHUB_USER": "${localEnv:GITHUB_USER}"
+	},
+	"runArgs": [
+		"--name=himos-vscode-honerkam",
+		"-it",
+		"--gpus=all",
+		"--rm",
+		"--network=host",
+		"--env",
+		"DISPLAY=",
+		"--volume",
+		"/tmp/.X11-unix:/tmp/.X11-unix:rw",
+		"--volume",
+		"${localEnv:HOME}/.Xauthority:/root/.Xauthority:rw",
+		"--volume",
+		"${localWorkspaceFolder}/data:/opt/iGibson/igibson/data:rw",
+		"--env",
+		"QT_X11_NO_MITSHM=1",
+		"--env",
+		"WANDB_API_KEY=todo",
+	],
+	"mounts": [
+		// "source=/usr/share/vulkan/icd.d/nvidia_icd.json,target=/etc/vulkan/icd.d/nvidia_icd.json,type=bind",
+	],
+	// Configure tool-specific properties.
+	"customizations": {
+		// Configure properties specific to VS Code.
+		"vscode": {
+			// Set *default* container specific settings.json values on container create.
+			"settings": {
+				"python.defaultInterpreterPath": "/miniconda/envs/igibson/bin/python",
+				"python.linting.enabled": true,
+				// "python.linting.pylintEnabled": true,
+				// 			"python.formatting.autopep8Path": "/opt/conda/bin/autopep8",
+				// 			"python.formatting.yapfPath": "/opt/conda/bin/yapf",
+				// 			"python.linting.flake8Path": "/opt/conda/bin/flake8",
+				// 			"python.linting.pycodestylePath": "/opt/conda/bin/pycodestyle",
+				// 			"python.linting.pydocstylePath": "/opt/conda/bin/pydocstyle",
+				// 			"python.linting.pylintPath": "/opt/conda/bin/pylint"
+				// "terminal.integrated.shell.linux": "/bin/bash",
+				"terminal.integrated.profiles.linux": {
+					"bash (container default)": {
+						"path": "/usr/bin/bash",
+						"overrideName": true
+					},
+					"terminal.integrated.defaultProfile.linux": "bash (container default)"
+				},
+				"C_Cpp.clang_format_fallbackStyle": "{ BasedOnStyle: Google, IndentWidth: 4, ColumnLimit: 0}",
+			},
+			// Add the IDs of extensions you want installed when the container is created.
+			"extensions": [
+				"ms-python.python",
+				"github.copilot",
+				"ms-vscode.cpptools",
+				// "ms-python.vscode-pylance"
+			]
+		}
+	},
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+	// Use 'postCreateCommand' to run commands after the container is created.
+	// "postCreateCommand": "git config --global user.name 'Daniel Honerkamp' && git config --global user.email 'honerkamp@cs.uni-freiburg.de'",
+	"postCreateCommand": "git config --global user.name 'todo' && git config --global user.email 'todo'",
+	// "postStartCommand": "bash -c 'source ~/.bashrc' && conda activate isaac-sim && bash -c 'source /isaac-sim/setup_conda_env.sh'"
+	// Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
+	// "remoteUser": "vscode",
+	// "features": {
+	// 	"git": "latest"
+	// }
+}

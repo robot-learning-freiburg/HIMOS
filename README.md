@@ -13,7 +13,7 @@ Please cite the paper as follows:
 
 
 #### Simulation Setup
-The repository uses the iGibson Simulator as well as Stable-baseline3 as external libaries. Please install iGibson==2.0.3 and Stable-baseline3==1.4.0
+The repository uses the iGibson Simulator as well as Stable-baseline3 as external libaries. Please install iGibson==2.2.0 and Stable-baseline3==1.4.0
 
 To train the Fetch robot, you must copy the inflated maps from the requirements folder into the respective iGibson data folders such that the robot computes feasable paths for navigation.
 
@@ -31,3 +31,8 @@ The iGibson simulator might crash, when evaluating multiple envrionments and use
 #### References
 <a name="interactive-multi-object-search" href="https://arxiv.org/abs/2307.06125">[1]</a> Learning Hierarchical Interactive Multi-Object Search for Mobile Manipulation,
 [arXiv]([https://arxiv.org/abs/2205.11384](https://arxiv.org/abs/2307.06125)https://arxiv.org/abs/2307.06125).
+
+
+
+# Daniel's docker instructions
+- add a symlink from igibson data to [project_root]/data
