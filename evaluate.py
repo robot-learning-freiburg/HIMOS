@@ -93,25 +93,25 @@ def main():
     
     
     scenes_counter = 8
-    scenes_succ = {'Merom_0_int': [[]]*6,'Benevolence_0_int': [[]]*6,  'Pomaria_0_int': [[]]*6, 'Wainscott_1_int': [[]]*6,'Rs_int': [[]]*6,'Ihlen_0_int': [[]]*6, 'Beechwood_1_int': [[]]*6, 'Ihlen_1_int': [[]]*6}
-    scenes_spl = {'Merom_0_int': [[]]*6,'Benevolence_0_int': [[]]*6,  'Pomaria_0_int': [[]]*6, 'Wainscott_1_int': [[]]*6,'Rs_int': [[]]*6,'Ihlen_0_int': [[]]*6, 'Beechwood_1_int': [[]]*6, 'Ihlen_1_int': [[]]*6}
-    scenes_steps_taken_succ = {'Merom_0_int': [[]]*6,'Benevolence_0_int': [[]]*6,  'Pomaria_0_int': [[]]*6, 'Wainscott_1_int': [[]]*6,'Rs_int': [[]]*6,'Ihlen_0_int': [[]]*6, 'Beechwood_1_int': [[]]*6, 'Ihlen_1_int': [[]]*6}
-    scenes_steps_taken_no_succ = {'Merom_0_int': [[]]*6,'Benevolence_0_int': [[]]*6,  'Pomaria_0_int': [[]]*6, 'Wainscott_1_int': [[]]*6,'Rs_int': [[]]*6,'Ihlen_0_int': [[]]*6, 'Beechwood_1_int': [[]]*6, 'Ihlen_1_int': [[]]*6}
-    scenes_steps_general = {'Merom_0_int': [[]]*6,'Benevolence_0_int': [[]]*6,  'Pomaria_0_int': [[]]*6, 'Wainscott_1_int': [[]]*6,'Rs_int': [[]]*6,'Ihlen_0_int': [[]]*6, 'Beechwood_1_int': [[]]*6, 'Ihlen_1_int': [[]]*6}
+    scenes_succ = {'Merom_0_int': [[] for i in range(6)],'Benevolence_0_int': [[] for i in range(6)],  'Pomaria_0_int': [[] for i in range(6)], 'Wainscott_1_int': [[] for i in range(6)],'Rs_int': [[] for i in range(6)],'Ihlen_0_int': [[] for i in range(6)], 'Beechwood_1_int': [[] for i in range(6)], 'Ihlen_1_int': [[] for i in range(6)]}
+    scenes_spl = {'Merom_0_int': [[] for i in range(6)],'Benevolence_0_int': [[] for i in range(6)],  'Pomaria_0_int': [[] for i in range(6)], 'Wainscott_1_int': [[] for i in range(6)],'Rs_int': [[] for i in range(6)],'Ihlen_0_int': [[] for i in range(6)], 'Beechwood_1_int': [[] for i in range(6)], 'Ihlen_1_int': [[] for i in range(6)]}
+    scenes_steps_taken_succ = {'Merom_0_int': [[] for i in range(6)],'Benevolence_0_int': [[] for i in range(6)],  'Pomaria_0_int': [[] for i in range(6)], 'Wainscott_1_int': [[] for i in range(6)],'Rs_int': [[] for i in range(6)],'Ihlen_0_int': [[] for i in range(6)], 'Beechwood_1_int': [[] for i in range(6)], 'Ihlen_1_int': [[] for i in range(6)]}
+    scenes_steps_taken_no_succ = {'Merom_0_int': [[] for i in range(6)],'Benevolence_0_int': [[] for i in range(6)],  'Pomaria_0_int': [[] for i in range(6)], 'Wainscott_1_int': [[] for i in range(6)],'Rs_int': [[] for i in range(6)],'Ihlen_0_int': [[] for i in range(6)], 'Beechwood_1_int': [[] for i in range(6)], 'Ihlen_1_int': [[] for i in range(6)]}
+    scenes_steps_general = {'Merom_0_int': [[] for i in range(6)],'Benevolence_0_int': [[] for i in range(6)],  'Pomaria_0_int': [[] for i in range(6)], 'Wainscott_1_int': [[] for i in range(6)],'Rs_int': [[] for i in range(6)],'Ihlen_0_int': [[] for i in range(6)], 'Beechwood_1_int': [[] for i in range(6)], 'Ihlen_1_int': [[] for i in range(6)]}
     test_scenes = ['Merom_0_int', 'Benevolence_0_int', 'Pomaria_0_int', 'Wainscott_1_int', 'Rs_int', 'Ihlen_0_int','Beechwood_1_int', 'Ihlen_1_int']
     """
 
     scenes_counter = 7
-    scenes_succ = {'Pomaria_2_int': [[]]*6, 'Benevolence_2_int': [[]]*6,  'Benevolence_1_int': [[]]*6,  # noqa: E501
-                   'Wainscott_0_int': [[]]*6, 'Beechwood_0_int': [[]]*6, 'Merom_1_int': [[]]*6, 'Pomaria_1_int': [[]]*6}
-    scenes_spl = {'Benevolence_1_int': [[]]*6, 'Pomaria_2_int': [[]]*6, 'Benevolence_2_int': [[]]*6,
-                  'Wainscott_0_int': [[]]*6, 'Beechwood_0_int': [[]]*6, 'Pomaria_1_int': [[]]*6, 'Merom_1_int': [[]]*6}
-    scenes_steps_taken_succ = {'Benevolence_1_int': [[]]*6, 'Pomaria_2_int': [[]]*6, 'Benevolence_2_int': [
-        []]*6, 'Wainscott_0_int': [[]]*6, 'Beechwood_0_int': [[]]*6, 'Pomaria_1_int': [[]]*6, 'Merom_1_int': [[]]*6}
-    scenes_steps_taken_no_succ = {'Benevolence_1_int': [[]]*6, 'Pomaria_2_int': [[]]*6, 'Benevolence_2_int': [
-        []]*6, 'Wainscott_0_int': [[]]*6, 'Beechwood_0_int': [[]]*6, 'Pomaria_1_int': [[]]*6, 'Merom_1_int': [[]]*6}
-    scenes_steps_general = {'Benevolence_1_int': [[]]*6, 'Pomaria_2_int': [[]]*6, 'Benevolence_2_int': [
-        []]*6, 'Wainscott_0_int': [[]]*6, 'Beechwood_0_int': [[]]*6, 'Pomaria_1_int': [[]]*6, 'Merom_1_int': [[]]*6}
+    scenes_succ = {'Pomaria_2_int': [[] for i in range(6)], 'Benevolence_2_int': [[] for i in range(6)],  'Benevolence_1_int': [[] for i in range(6)],  # noqa: E501
+                   'Wainscott_0_int': [[] for i in range(6)], 'Beechwood_0_int': [[] for i in range(6)], 'Merom_1_int': [[] for i in range(6)], 'Pomaria_1_int': [[] for i in range(6)]}
+    scenes_spl = {'Benevolence_1_int': [[] for i in range(6)], 'Pomaria_2_int': [[] for i in range(6)], 'Benevolence_2_int': [[] for i in range(6)],
+                  'Wainscott_0_int': [[] for i in range(6)], 'Beechwood_0_int': [[] for i in range(6)], 'Pomaria_1_int': [[] for i in range(6)], 'Merom_1_int': [[] for i in range(6)]}
+    scenes_steps_taken_succ = {'Benevolence_1_int': [[] for i in range(6)], 'Pomaria_2_int': [[] for i in range(6)], 'Benevolence_2_int': [
+        []]*6, 'Wainscott_0_int': [[] for i in range(6)], 'Beechwood_0_int': [[] for i in range(6)], 'Pomaria_1_int': [[] for i in range(6)], 'Merom_1_int': [[] for i in range(6)]}
+    scenes_steps_taken_no_succ = {'Benevolence_1_int': [[] for i in range(6)], 'Pomaria_2_int': [[] for i in range(6)], 'Benevolence_2_int': [
+        []]*6, 'Wainscott_0_int': [[] for i in range(6)], 'Beechwood_0_int': [[] for i in range(6)], 'Pomaria_1_int': [[] for i in range(6)], 'Merom_1_int': [[] for i in range(6)]}
+    scenes_steps_general = {'Benevolence_1_int': [[] for i in range(6)], 'Pomaria_2_int': [[] for i in range(6)], 'Benevolence_2_int': [
+        []]*6, 'Wainscott_0_int': [[] for i in range(6)], 'Beechwood_0_int': [[] for i in range(6)], 'Pomaria_1_int': [[] for i in range(6)], 'Merom_1_int': [[] for i in range(6)]}
     test_scenes = ['Pomaria_2_int', 'Benevolence_2_int', 'Benevolence_1_int',
                    'Wainscott_0_int', 'Beechwood_0_int', 'Merom_1_int', 'Pomaria_1_int']
     """
@@ -211,11 +211,11 @@ def main():
                 set_determinism_eval(seed)
                 objects_find = 1
 
-                with open(f'results/{method}_seed{seed}_succ.txt', 'a') as f:
+                with open(f'eval_results/{method}_seed{seed}_succ.txt', 'a') as f:
                     f.write('\n')
-                with open(f'results/{method}_seed{seed}_spl.txt', 'a') as f:
+                with open(f'eval_results/{method}_seed{seed}_spl.txt', 'a') as f:
                     f.write('\n')
-                with open(f'results/{method}_seed{seed}_steps.txt', 'a') as f:
+                with open(f'eval_results/{method}_seed{seed}_steps.txt', 'a') as f:
                     f.write('\n')
 
             env.task.num_tar_objects = objects_find
