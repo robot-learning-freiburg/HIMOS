@@ -155,6 +155,9 @@ def main():
     p_dist_ex_fr = [[], []]
     env, model_ll_pol, model_hl_pol, model = None, None, None, None
     for ep in range(6000):
+        print("#############################################")
+        print(f"Starting episode {ep}")
+        print("#############################################")
         acc_rew = []
         
         if ep % how_many_eps_per_sing_task == 0:
