@@ -89,8 +89,16 @@ def set_determinism_eval(seed=0):
     torch.cuda.manual_seed_all(seed)
 
 
+def copy_changed_files():
+    import shutil
+    from pathlib import Path
+    shutil.copyfile("requirements/fetch_gripper.urdf", "/opt/iGibson/igibson/data/assets/models/fetch/fetch_gripper.urdf")
+    for file in Path("requirements").glob("**/*.png"):
+        shutil.copyfile(file, f"/opt/iGibson/igibson/data/ig_dataset/scenes/{file.parent.name}/layout/{file.name}")
+
 def main():
-    
+    copy_changed_files()
+        
     
     scenes_counter = 8
     scenes_succ = {'Merom_0_int': [[] for i in range(6)],'Benevolence_0_int': [[] for i in range(6)],  'Pomaria_0_int': [[] for i in range(6)], 'Wainscott_1_int': [[] for i in range(6)],'Rs_int': [[] for i in range(6)],'Ihlen_0_int': [[] for i in range(6)], 'Beechwood_1_int': [[] for i in range(6)], 'Ihlen_1_int': [[] for i in range(6)]}

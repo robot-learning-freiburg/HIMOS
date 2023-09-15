@@ -6,7 +6,7 @@ import time
 import ray
 
 from baselines.baseline1 import greedy_baseline
-from evaluate import setup, set_determinism_eval
+from evaluate import setup, set_determinism_eval, copy_changed_files
 
 
 @ray.remote(num_cpus=15)
