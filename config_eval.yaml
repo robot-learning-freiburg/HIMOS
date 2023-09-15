@@ -167,3 +167,5 @@ load_object_categories:  [shelf, door, sofa, sink, table, window]
 # visual objects
 visual_object_at_initial_target_pos: true
 target_visual_object_visible_to_agent: false
+
+frontier_selection: fabian

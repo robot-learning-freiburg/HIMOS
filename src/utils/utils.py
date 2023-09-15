@@ -719,9 +719,7 @@ def get_cluster_medoid(labels_cluster_img, cluster_label):
     
 
 
-def explore(sem_map,map_size_,agent_pos, env):
-        
-    
+def explore(sem_map,map_size_,agent_pos, env, frontier_selection: str):
     occupancy_map = np.zeros((map_size_,map_size_,1))
     free_space = sem_map[:,:,0] == 255
     trace = sem_map[:,:,2] == 255
@@ -773,15 +771,13 @@ def explore(sem_map,map_size_,agent_pos, env):
     cluster_img[valid_idx] = 1
     labels_cluster, num = skimage.measure.label(cluster_img, connectivity = 2, return_num = True)
 
-    cluster_selection = "fabian"
-
     if cluster_img.sum() !=0:
         unique, counts = np.unique(labels_cluster, return_counts = True)
         
-        if (cluster_selection == "fabian") or (len(counts[1:]) == 1):
+        if (frontier_selection == "fabian") or (len(counts[1:]) == 1):
             largest_cluster_label = np.argmax(counts[1:]) + 1
             goal_position = get_cluster_medoid(labels_cluster, largest_cluster_label)
-        elif cluster_selection == "geometric_util":
+        elif frontier_selection == "geometric_util":
             frontier_centers, dists = [], []
             for cluster in unique[1:]:
                 frontier_center = get_cluster_medoid(labels_cluster, cluster)
