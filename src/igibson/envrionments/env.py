@@ -967,7 +967,7 @@ class Env(gym.Env):
         sensors = self.get_sensor_obs()
 
         if self.add_frontier_exploration:
-            goal_position = explore(self.global_map, self.mapping.map_size[0], self.mapping.rob_pose)
+            goal_position = explore(self.global_map, self.mapping.map_size[0], self.mapping.rob_pose, self)
 
             self.prev_frontier_point = goal_position
 

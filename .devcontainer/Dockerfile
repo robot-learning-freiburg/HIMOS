@@ -20,6 +20,7 @@ RUN ~/.fzf/install --all
 # RUN pip3 install igibson==2.2.0
 RUN pip3 install stable-baselines3==1.4.0
 RUN pip3 install wandb
+RUN pip3 install ray
 
 WORKDIR /workspaces
 

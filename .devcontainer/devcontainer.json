@@ -20,6 +20,7 @@
 		"--gpus=all",
 		"--rm",
 		"--network=host",
+		"--shm-size=120.0gb",
 		"--env",
 		"DISPLAY=",
 		"--volume",

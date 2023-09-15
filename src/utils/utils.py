@@ -8,7 +8,9 @@ from time import sleep
 import skimage
 from functools import reduce 
 import cv2
+from pathlib import Path
 
+PROJECT_ROOT = Path(__file__).parent.parent.parent
 
 
 def check_collision(body_a, body_b=None, link_a=None, fixed_body_ids=None,ignore_ids=[]):
@@ -700,8 +702,24 @@ def drive_to_frontier_point(env,frontier_point):
     
     return False,driven_wps,remaining_wps>0
    
+   
+def get_cluster_medoid(labels_cluster_img, cluster_label):
+    idx = (labels_cluster_img == cluster_label)
+   
+    x_np = np.where(idx == True)[0]
+    y_np = np.where(idx == True)[1]
 
-def explore(sem_map,map_size_,agent_pos):
+    x_mat = np.transpose(np.vstack([x_np]*np.size(x_np))) - x_np
+    y_mat = np.transpose(np.vstack([y_np]*np.size(y_np))) - y_np
+    sum_val = np.sum((x_mat**2 + y_mat**2)**(1/2),1)
+    medoid = np.argmin(sum_val)
+
+    goal_position = np.array([x_np[medoid], y_np[medoid]])#, device=device).long() 
+    return goal_position
+    
+
+
+def explore(sem_map,map_size_,agent_pos, env):
         
     
     occupancy_map = np.zeros((map_size_,map_size_,1))
@@ -754,29 +772,36 @@ def explore(sem_map,map_size_,agent_pos):
     cluster_img = np.zeros([map_size_, map_size_], dtype=np.uint8)
     cluster_img[valid_idx] = 1
     labels_cluster, num = skimage.measure.label(cluster_img, connectivity = 2, return_num = True)
+
+    cluster_selection = "fabian"
+
     if cluster_img.sum() !=0:
         unique, counts = np.unique(labels_cluster, return_counts = True)
         
-        largest_cluster_label = np.argmax(counts[1:])+1
-        output_img = np.zeros([map_size_,map_size_])
-        output_img[labels_cluster == largest_cluster_label] = 1
-        output_img[labels_cluster != largest_cluster_label] = 0 
-        final_idx = (output_img == 1)
-       
-        final_idx = final_idx
-        x_np = np.where(final_idx == True)[0]
-        y_np = np.where(final_idx == True)[1]
-
-        x_mat = np.transpose(np.vstack([x_np]*np.size(x_np))) - x_np
-        y_mat = np.transpose(np.vstack([y_np]*np.size(y_np))) - y_np
-        sum_val = np.sum((x_mat**2 + y_mat**2)**(1/2),1)
-        medoid = np.argmin(sum_val)
-
-        goal_position = np.array([x_np[medoid], y_np[medoid]])#, device=device).long() 
-        
+        if (cluster_selection == "fabian") or (len(counts[1:]) == 1):
+            largest_cluster_label = np.argmax(counts[1:]) + 1
+            goal_position = get_cluster_medoid(labels_cluster, largest_cluster_label)
+        elif cluster_selection == "geometric_util":
+            frontier_centers, dists = [], []
+            for cluster in unique[1:]:
+                frontier_center = get_cluster_medoid(labels_cluster, cluster)
+                frontier_centers.append(frontier_center)
+                
+                _, geodesic_dist = env.scene.get_shortest_path(env.task.floor_num, 
+                                                               env.scene.map_to_world(np.array(agent_pos[:2])), 
+                                                               env.scene.map_to_world(np.array(frontier_center[:2])), 
+                                                               entire_path=False)
+                dists.append(geodesic_dist)
+            
+            lengths = counts[1:] * env.mapping.grid_res
+            geometric_util = lengths / dists
+            
+            frontier_idx = np.argmax(geometric_util)
+            goal_position = frontier_centers[frontier_idx]
+        else:
+            raise ValueError("Unknown cluster selection method: {}".format(cluster_selection))
     else:
         goal_position = None
         
     return goal_position
 
-    
