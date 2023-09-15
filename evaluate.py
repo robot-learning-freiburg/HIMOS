@@ -137,13 +137,9 @@ def main():
     how_many_eps_per_sing_task = 25 
     objects_find = 0
     objects_find_max = 7
-    succ_rate = []
     wrong_commands = []
-    steps_mean = []
     ep_rew = 0
     discount_length_mean = []
-    SPL = []
-    ac_dist = [0.0]*12
     
     if not os.path.exists('eval_results'):
         os.makedirs('eval_results')

@@ -139,12 +139,11 @@ def main():
 
     ray.init(num_cpus=60)
 
-    method = "HIMOS_eval" #arbitary name
     method_eval = "greedy" #either greedy or policy
+    method = f"HIMOS_eval_{method_eval}" #arbitary name
     seed = 22  # 22,42,64
     det_policy = False
-    # TODO: change back to 25
-    how_many_eps_per_sing_task = 10
+    how_many_eps_per_sing_task = 25
     objects_find_max = 7
 
     if not os.path.exists('eval_results'):
