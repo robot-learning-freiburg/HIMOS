@@ -9,7 +9,7 @@ from baselines.baseline1 import greedy_baseline
 from evaluate import setup, set_determinism_eval, copy_changed_files
 
 
-@ray.remote(num_cpus=15)
+@ray.remote(num_cpus=12)
 def evaluate_scene(scene_id: str, method: str, seed, objects_find_max: int, how_many_eps_per_sing_task: int, det_policy: bool, method_eval: str):
     scenes_succ = {scene_id: [[] for i in range(6)]}
     scenes_spl = {scene_id: [[] for i in range(6)]}

@@ -33,7 +33,7 @@ def setup(scene_id, objects, method):
     
     #to see visual interface of iGibson via PyBullet: use mode="gui_interactive" and  use_pb_gui=True
     env = Env(config_filename=config_filename, scene_id=scene_id, objects_find=objects, method=method,
-              physics_timestep=1.0/120, action_timestep=1.0 / 10.0, mode="gui_interactive", use_pb_gui=True)
+              physics_timestep=1.0/120, action_timestep=1.0 / 10.0, mode="gui_non_interactive", use_pb_gui=False)
 
     policy_kwargs_LL = dict(
         features_extractor_class=CustomExtractorLL
@@ -130,8 +130,8 @@ def main():
 
     baseline_greedy = greedy_baseline()
     
-    method = "HIMOS_eval" #arbitary name
-    method_eval = "policy" #either greedy or policy
+    method_eval = "greedy" #either greedy or policy
+    method = f"HIMOS_eval_{method_eval}" #arbitary name
     seed = 22  # 22,42,64
     det_policy = False
     how_many_eps_per_sing_task = 25 

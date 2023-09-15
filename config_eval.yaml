@@ -55,7 +55,7 @@ initial_aux_prob: 1.0
 #HRL TASK
 cracker_cabin_mixed: true
 #opencv show map
-show_map: true
+show_map: false
 save_failed_eps: false
 evaluate: true
 softmax_annealing: false
