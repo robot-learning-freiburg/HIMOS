@@ -115,37 +115,37 @@ def evaluate_scene(scene_id: str, method: str, seed, objects_find_max: int, how_
 def main():
     copy_changed_files()
     
-    scenes_succ = {'Merom_0_int': [[] for i in range(6)],'Benevolence_0_int': [[] for i in range(6)],  'Pomaria_0_int': [[] for i in range(6)], 'Wainscott_1_int': [[] for i in range(6)],'Rs_int': [[] for i in range(6)],'Ihlen_0_int': [[] for i in range(6)], 'Beechwood_1_int': [[] for i in range(6)], 'Ihlen_1_int': [[] for i in range(6)]}
-    scenes_spl = {'Merom_0_int': [[] for i in range(6)],'Benevolence_0_int': [[] for i in range(6)],  'Pomaria_0_int': [[] for i in range(6)], 'Wainscott_1_int': [[] for i in range(6)],'Rs_int': [[] for i in range(6)],'Ihlen_0_int': [[] for i in range(6)], 'Beechwood_1_int': [[] for i in range(6)], 'Ihlen_1_int': [[] for i in range(6)]}
-    scenes_steps_taken_succ = {'Merom_0_int': [[] for i in range(6)],'Benevolence_0_int': [[] for i in range(6)],  'Pomaria_0_int': [[] for i in range(6)], 'Wainscott_1_int': [[] for i in range(6)],'Rs_int': [[] for i in range(6)],'Ihlen_0_int': [[] for i in range(6)], 'Beechwood_1_int': [[] for i in range(6)], 'Ihlen_1_int': [[] for i in range(6)]}
-    scenes_steps_taken_no_succ = {'Merom_0_int': [[] for i in range(6)],'Benevolence_0_int': [[] for i in range(6)],  'Pomaria_0_int': [[] for i in range(6)], 'Wainscott_1_int': [[] for i in range(6)],'Rs_int': [[] for i in range(6)],'Ihlen_0_int': [[] for i in range(6)], 'Beechwood_1_int': [[] for i in range(6)], 'Ihlen_1_int': [[] for i in range(6)]}
-    scenes_steps_general = {'Merom_0_int': [[] for i in range(6)],'Benevolence_0_int': [[] for i in range(6)],  'Pomaria_0_int': [[] for i in range(6)], 'Wainscott_1_int': [[] for i in range(6)],'Rs_int': [[] for i in range(6)],'Ihlen_0_int': [[] for i in range(6)], 'Beechwood_1_int': [[] for i in range(6)], 'Ihlen_1_int': [[] for i in range(6)]}
-    test_scenes = ['Merom_0_int', 'Benevolence_0_int', 'Pomaria_0_int', 'Wainscott_1_int', 'Rs_int', 'Ihlen_0_int','Beechwood_1_int', 'Ihlen_1_int']
-    """
-
-    scenes_succ = {'Pomaria_2_int': [[] for i in range(6)], 'Benevolence_2_int': [[] for i in range(6)],  'Benevolence_1_int': [[] for i in range(6)],  # noqa: E501
-                   'Wainscott_0_int': [[] for i in range(6)], 'Beechwood_0_int': [[] for i in range(6)], 'Merom_1_int': [[] for i in range(6)], 'Pomaria_1_int': [[] for i in range(6)]}
-    scenes_spl = {'Benevolence_1_int': [[] for i in range(6)], 'Pomaria_2_int': [[] for i in range(6)], 'Benevolence_2_int': [[] for i in range(6)],
-                  'Wainscott_0_int': [[] for i in range(6)], 'Beechwood_0_int': [[] for i in range(6)], 'Pomaria_1_int': [[] for i in range(6)], 'Merom_1_int': [[] for i in range(6)]}
-    scenes_steps_taken_succ = {'Benevolence_1_int': [[] for i in range(6)], 'Pomaria_2_int': [[] for i in range(6)], 'Benevolence_2_int': [
-        []]*6, 'Wainscott_0_int': [[] for i in range(6)], 'Beechwood_0_int': [[] for i in range(6)], 'Pomaria_1_int': [[] for i in range(6)], 'Merom_1_int': [[] for i in range(6)]}
-    scenes_steps_taken_no_succ = {'Benevolence_1_int': [[] for i in range(6)], 'Pomaria_2_int': [[] for i in range(6)], 'Benevolence_2_int': [
-        []]*6, 'Wainscott_0_int': [[] for i in range(6)], 'Beechwood_0_int': [[] for i in range(6)], 'Pomaria_1_int': [[] for i in range(6)], 'Merom_1_int': [[] for i in range(6)]}
-    scenes_steps_general = {'Benevolence_1_int': [[] for i in range(6)], 'Pomaria_2_int': [[] for i in range(6)], 'Benevolence_2_int': [
-        
-        []]*6, 'Wainscott_0_int': [[] for i in range(6)], 'Beechwood_0_int': [[] for i in range(6)], 'Pomaria_1_int': [[] for i in range(6)], 'Merom_1_int': [[] for i in range(6)]}
-    test_scenes = ['Pomaria_2_int', 'Benevolence_2_int', 'Benevolence_1_int',
-                   'Wainscott_0_int', 'Beechwood_0_int', 'Merom_1_int', 'Pomaria_1_int']
-    """
-
     ray.init(num_cpus=60)
 
-    method_eval = "greedy" #either greedy or policy
-    method = f"HIMOS_eval_{method_eval}" #arbitary name
+    method_eval = "greedy"  # either greedy or policy
+    scenes_set = "unseen"
+    method = f"HIMOS_eval_{method_eval}_geometric_util_{scenes_set}"  #arbitary name
     seed = 22  # 22,42,64
     det_policy = False
     how_many_eps_per_sing_task = 25
     objects_find_max = 7
+
+    if scenes_set == "seen":
+        scenes_succ = {'Merom_0_int': [[] for i in range(6)],'Benevolence_0_int': [[] for i in range(6)],  'Pomaria_0_int': [[] for i in range(6)], 'Wainscott_1_int': [[] for i in range(6)],'Rs_int': [[] for i in range(6)],'Ihlen_0_int': [[] for i in range(6)], 'Beechwood_1_int': [[] for i in range(6)], 'Ihlen_1_int': [[] for i in range(6)]}
+        scenes_spl = {'Merom_0_int': [[] for i in range(6)],'Benevolence_0_int': [[] for i in range(6)],  'Pomaria_0_int': [[] for i in range(6)], 'Wainscott_1_int': [[] for i in range(6)],'Rs_int': [[] for i in range(6)],'Ihlen_0_int': [[] for i in range(6)], 'Beechwood_1_int': [[] for i in range(6)], 'Ihlen_1_int': [[] for i in range(6)]}
+        scenes_steps_taken_succ = {'Merom_0_int': [[] for i in range(6)],'Benevolence_0_int': [[] for i in range(6)],  'Pomaria_0_int': [[] for i in range(6)], 'Wainscott_1_int': [[] for i in range(6)],'Rs_int': [[] for i in range(6)],'Ihlen_0_int': [[] for i in range(6)], 'Beechwood_1_int': [[] for i in range(6)], 'Ihlen_1_int': [[] for i in range(6)]}
+        scenes_steps_taken_no_succ = {'Merom_0_int': [[] for i in range(6)],'Benevolence_0_int': [[] for i in range(6)],  'Pomaria_0_int': [[] for i in range(6)], 'Wainscott_1_int': [[] for i in range(6)],'Rs_int': [[] for i in range(6)],'Ihlen_0_int': [[] for i in range(6)], 'Beechwood_1_int': [[] for i in range(6)], 'Ihlen_1_int': [[] for i in range(6)]}
+        scenes_steps_general = {'Merom_0_int': [[] for i in range(6)],'Benevolence_0_int': [[] for i in range(6)],  'Pomaria_0_int': [[] for i in range(6)], 'Wainscott_1_int': [[] for i in range(6)],'Rs_int': [[] for i in range(6)],'Ihlen_0_int': [[] for i in range(6)], 'Beechwood_1_int': [[] for i in range(6)], 'Ihlen_1_int': [[] for i in range(6)]}
+        test_scenes = ['Merom_0_int', 'Benevolence_0_int', 'Pomaria_0_int', 'Wainscott_1_int', 'Rs_int', 'Ihlen_0_int','Beechwood_1_int', 'Ihlen_1_int']
+    elif scenes_set == "unseen":
+        scenes_succ = {'Pomaria_2_int': [[] for i in range(6)], 'Benevolence_2_int': [[] for i in range(6)],  'Benevolence_1_int': [[] for i in range(6)],  # noqa: E501
+                    'Wainscott_0_int': [[] for i in range(6)], 'Beechwood_0_int': [[] for i in range(6)], 'Merom_1_int': [[] for i in range(6)], 'Pomaria_1_int': [[] for i in range(6)]}
+        scenes_spl = {'Benevolence_1_int': [[] for i in range(6)], 'Pomaria_2_int': [[] for i in range(6)], 'Benevolence_2_int': [[] for i in range(6)],
+                    'Wainscott_0_int': [[] for i in range(6)], 'Beechwood_0_int': [[] for i in range(6)], 'Pomaria_1_int': [[] for i in range(6)], 'Merom_1_int': [[] for i in range(6)]}
+        scenes_steps_taken_succ = {'Benevolence_1_int': [[] for i in range(6)], 'Pomaria_2_int': [[] for i in range(6)], 'Benevolence_2_int': [
+                    []]*6, 'Wainscott_0_int': [[] for i in range(6)], 'Beechwood_0_int': [[] for i in range(6)], 'Pomaria_1_int': [[] for i in range(6)], 'Merom_1_int': [[] for i in range(6)]}
+        scenes_steps_taken_no_succ = {'Benevolence_1_int': [[] for i in range(6)], 'Pomaria_2_int': [[] for i in range(6)], 'Benevolence_2_int': [
+            []]*6, 'Wainscott_0_int': [[] for i in range(6)], 'Beechwood_0_int': [[] for i in range(6)], 'Pomaria_1_int': [[] for i in range(6)], 'Merom_1_int': [[] for i in range(6)]}
+        scenes_steps_general = {'Benevolence_1_int': [[] for i in range(6)], 'Pomaria_2_int': [[] for i in range(6)], 'Benevolence_2_int': [
+            []]*6, 'Wainscott_0_int': [[] for i in range(6)], 'Beechwood_0_int': [[] for i in range(6)], 'Pomaria_1_int': [[] for i in range(6)], 'Merom_1_int': [[] for i in range(6)]}
+        test_scenes = ['Pomaria_2_int', 'Benevolence_2_int', 'Benevolence_1_int', 'Wainscott_0_int', 'Beechwood_0_int', 'Merom_1_int', 'Pomaria_1_int']
+    else:
+        raise ValueError("Invalid scene set")
 
     if not os.path.exists('eval_results'):
         os.makedirs('eval_results')

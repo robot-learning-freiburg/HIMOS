@@ -36,3 +36,10 @@ The iGibson simulator might crash, when evaluating multiple envrionments and use
 
 # Daniel's docker instructions
 - add a symlink from igibson data to [project_root]/data
+
+
+```
+source activate igibson && cd HIMOS
+rm nohup.out
+nohup python -u evaluate_parallel.py 2>&1 > nohup2.out &
+```
