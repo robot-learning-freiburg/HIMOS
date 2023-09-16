@@ -4,6 +4,7 @@ import torch
 import gc
 import time
 import ray
+import shutil
 
 from baselines.baseline1 import greedy_baseline
 from evaluate import setup, set_determinism_eval, copy_changed_files
@@ -151,7 +152,6 @@ def main():
     fpath = f'eval_results/{method}_seed{seed}_succ.txt'
     assert not os.path.exists(fpath) or os.path.getsize(fpath) == 0, "File already exists and is not empty"
     config_filename = os.path.join('./', 'config_eval.yaml')
-    import shutil
     shutil.copyfile(config_filename, f'eval_results/{method}_seed{seed}_config.yaml')
     
     with open(f'eval_results/{method}_seed{seed}_succ.txt', 'w') as f:
