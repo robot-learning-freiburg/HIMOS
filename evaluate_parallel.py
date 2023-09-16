@@ -148,7 +148,8 @@ def main():
 
     if not os.path.exists('eval_results'):
         os.makedirs('eval_results')
-    assert not os.path.exists(f'eval_results/{method}_seed{seed}_succ.txt'), "File already exists"
+    fpath = f'eval_results/{method}_seed{seed}_succ.txt'
+    assert not os.path.exists(fpath) or os.path.getsize(fpath) == 0, "File already exists and is not empty"
     config_filename = os.path.join('./', 'config_eval.yaml')
     import shutil
     shutil.copyfile(config_filename, f'eval_results/{method}_seed{seed}_config.yaml')

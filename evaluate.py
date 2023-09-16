@@ -33,7 +33,7 @@ def setup(scene_id, objects, method):
     
     #to see visual interface of iGibson via PyBullet: use mode="gui_interactive" and  use_pb_gui=True
     env = Env(config_filename=config_filename, scene_id=scene_id, objects_find=objects, method=method,
-              physics_timestep=1.0/120, action_timestep=1.0 / 10.0, mode="gui_non_interactive", use_pb_gui=False)
+              physics_timestep=1.0/120, action_timestep=1.0 / 10.0, mode="headless", use_pb_gui=False)
 
     policy_kwargs_LL = dict(
         features_extractor_class=CustomExtractorLL
