@@ -39,7 +39,8 @@ The iGibson simulator might crash, when evaluating multiple envrionments and use
 
 
 ```
+d exec -it himos-vscode-honerkam bash
 source activate igibson && cd HIMOS
-rm nohup.out
-nohup python -u evaluate_parallel.py 2>&1 > nohup2.out &
+rm nohup*.out
+nohup python -u evaluate_parallel.py 2>&1 > nohup.out &
 ```

@@ -1,30 +1,19 @@
+import random
 import os
-from typing import Callable
 import numpy as np
-import igibson
 from src.igibson.envrionments.env import Env
-from src.SB3.save_model_callback import SaveModel
-
-from hrl_models import CustomExtractorLL, CustomExtractorHL
 import torch
 import gym
-
 import gc
 import yaml
-
+from stable_baselines3.common.utils import set_random_seed
 
 from src.highlevel_policy.general_policy import GEN_POLICY
-
 from src.SB3.ppo import PPO
-
 from src.exploration_policy.ppo_mod_disc import PPO as PPO_LL
-
-from src.highlevel_policy.subproc_vec_env_HRL import SubprocVecEnv
-
-from stable_baselines3.common.utils import set_random_seed
+from hrl_models import CustomExtractorLL, CustomExtractorHL
 from baselines.baseline1 import greedy_baseline
 
-import random
 
 
 def setup(scene_id, objects, method):
@@ -98,31 +87,41 @@ def copy_changed_files():
 
 def main():
     copy_changed_files()
-        
-    
-    scenes_counter = 8
-    scenes_succ = {'Merom_0_int': [[] for i in range(6)],'Benevolence_0_int': [[] for i in range(6)],  'Pomaria_0_int': [[] for i in range(6)], 'Wainscott_1_int': [[] for i in range(6)],'Rs_int': [[] for i in range(6)],'Ihlen_0_int': [[] for i in range(6)], 'Beechwood_1_int': [[] for i in range(6)], 'Ihlen_1_int': [[] for i in range(6)]}
-    scenes_spl = {'Merom_0_int': [[] for i in range(6)],'Benevolence_0_int': [[] for i in range(6)],  'Pomaria_0_int': [[] for i in range(6)], 'Wainscott_1_int': [[] for i in range(6)],'Rs_int': [[] for i in range(6)],'Ihlen_0_int': [[] for i in range(6)], 'Beechwood_1_int': [[] for i in range(6)], 'Ihlen_1_int': [[] for i in range(6)]}
-    scenes_steps_taken_succ = {'Merom_0_int': [[] for i in range(6)],'Benevolence_0_int': [[] for i in range(6)],  'Pomaria_0_int': [[] for i in range(6)], 'Wainscott_1_int': [[] for i in range(6)],'Rs_int': [[] for i in range(6)],'Ihlen_0_int': [[] for i in range(6)], 'Beechwood_1_int': [[] for i in range(6)], 'Ihlen_1_int': [[] for i in range(6)]}
-    scenes_steps_taken_no_succ = {'Merom_0_int': [[] for i in range(6)],'Benevolence_0_int': [[] for i in range(6)],  'Pomaria_0_int': [[] for i in range(6)], 'Wainscott_1_int': [[] for i in range(6)],'Rs_int': [[] for i in range(6)],'Ihlen_0_int': [[] for i in range(6)], 'Beechwood_1_int': [[] for i in range(6)], 'Ihlen_1_int': [[] for i in range(6)]}
-    scenes_steps_general = {'Merom_0_int': [[] for i in range(6)],'Benevolence_0_int': [[] for i in range(6)],  'Pomaria_0_int': [[] for i in range(6)], 'Wainscott_1_int': [[] for i in range(6)],'Rs_int': [[] for i in range(6)],'Ihlen_0_int': [[] for i in range(6)], 'Beechwood_1_int': [[] for i in range(6)], 'Ihlen_1_int': [[] for i in range(6)]}
-    test_scenes = ['Merom_0_int', 'Benevolence_0_int', 'Pomaria_0_int', 'Wainscott_1_int', 'Rs_int', 'Ihlen_0_int','Beechwood_1_int', 'Ihlen_1_int']
-    """
 
-    scenes_counter = 7
-    scenes_succ = {'Pomaria_2_int': [[] for i in range(6)], 'Benevolence_2_int': [[] for i in range(6)],  'Benevolence_1_int': [[] for i in range(6)],  # noqa: E501
-                   'Wainscott_0_int': [[] for i in range(6)], 'Beechwood_0_int': [[] for i in range(6)], 'Merom_1_int': [[] for i in range(6)], 'Pomaria_1_int': [[] for i in range(6)]}
-    scenes_spl = {'Benevolence_1_int': [[] for i in range(6)], 'Pomaria_2_int': [[] for i in range(6)], 'Benevolence_2_int': [[] for i in range(6)],
-                  'Wainscott_0_int': [[] for i in range(6)], 'Beechwood_0_int': [[] for i in range(6)], 'Pomaria_1_int': [[] for i in range(6)], 'Merom_1_int': [[] for i in range(6)]}
-    scenes_steps_taken_succ = {'Benevolence_1_int': [[] for i in range(6)], 'Pomaria_2_int': [[] for i in range(6)], 'Benevolence_2_int': [
-        []]*6, 'Wainscott_0_int': [[] for i in range(6)], 'Beechwood_0_int': [[] for i in range(6)], 'Pomaria_1_int': [[] for i in range(6)], 'Merom_1_int': [[] for i in range(6)]}
-    scenes_steps_taken_no_succ = {'Benevolence_1_int': [[] for i in range(6)], 'Pomaria_2_int': [[] for i in range(6)], 'Benevolence_2_int': [
-        []]*6, 'Wainscott_0_int': [[] for i in range(6)], 'Beechwood_0_int': [[] for i in range(6)], 'Pomaria_1_int': [[] for i in range(6)], 'Merom_1_int': [[] for i in range(6)]}
-    scenes_steps_general = {'Benevolence_1_int': [[] for i in range(6)], 'Pomaria_2_int': [[] for i in range(6)], 'Benevolence_2_int': [
-        []]*6, 'Wainscott_0_int': [[] for i in range(6)], 'Beechwood_0_int': [[] for i in range(6)], 'Pomaria_1_int': [[] for i in range(6)], 'Merom_1_int': [[] for i in range(6)]}
-    test_scenes = ['Pomaria_2_int', 'Benevolence_2_int', 'Benevolence_1_int',
-                   'Wainscott_0_int', 'Beechwood_0_int', 'Merom_1_int', 'Pomaria_1_int']
-    """
+    method_eval = "greedy" #either greedy or policy
+    scenes_set = "seen"
+    method = f"HIMOS_eval_{method_eval}_fabian_{scenes_set}" #arbitary name
+    seed = 22  # 22,42,64
+    det_policy = False
+    how_many_eps_per_sing_task = 25 
+    objects_find = 0
+    objects_find_max = 7        
+    
+    if scenes_set == "seen":
+        # scenes_counter = 8
+        scenes_succ = {'Merom_0_int': [[] for i in range(6)],'Benevolence_0_int': [[] for i in range(6)],  'Pomaria_0_int': [[] for i in range(6)], 'Wainscott_1_int': [[] for i in range(6)],'Rs_int': [[] for i in range(6)],'Ihlen_0_int': [[] for i in range(6)], 'Beechwood_1_int': [[] for i in range(6)], 'Ihlen_1_int': [[] for i in range(6)]}
+        scenes_spl = {'Merom_0_int': [[] for i in range(6)],'Benevolence_0_int': [[] for i in range(6)],  'Pomaria_0_int': [[] for i in range(6)], 'Wainscott_1_int': [[] for i in range(6)],'Rs_int': [[] for i in range(6)],'Ihlen_0_int': [[] for i in range(6)], 'Beechwood_1_int': [[] for i in range(6)], 'Ihlen_1_int': [[] for i in range(6)]}
+        scenes_steps_taken_succ = {'Merom_0_int': [[] for i in range(6)],'Benevolence_0_int': [[] for i in range(6)],  'Pomaria_0_int': [[] for i in range(6)], 'Wainscott_1_int': [[] for i in range(6)],'Rs_int': [[] for i in range(6)],'Ihlen_0_int': [[] for i in range(6)], 'Beechwood_1_int': [[] for i in range(6)], 'Ihlen_1_int': [[] for i in range(6)]}
+        scenes_steps_taken_no_succ = {'Merom_0_int': [[] for i in range(6)],'Benevolence_0_int': [[] for i in range(6)],  'Pomaria_0_int': [[] for i in range(6)], 'Wainscott_1_int': [[] for i in range(6)],'Rs_int': [[] for i in range(6)],'Ihlen_0_int': [[] for i in range(6)], 'Beechwood_1_int': [[] for i in range(6)], 'Ihlen_1_int': [[] for i in range(6)]}
+        scenes_steps_general = {'Merom_0_int': [[] for i in range(6)],'Benevolence_0_int': [[] for i in range(6)],  'Pomaria_0_int': [[] for i in range(6)], 'Wainscott_1_int': [[] for i in range(6)],'Rs_int': [[] for i in range(6)],'Ihlen_0_int': [[] for i in range(6)], 'Beechwood_1_int': [[] for i in range(6)], 'Ihlen_1_int': [[] for i in range(6)]}
+        test_scenes = ['Merom_0_int', 'Benevolence_0_int', 'Pomaria_0_int', 'Wainscott_1_int', 'Rs_int', 'Ihlen_0_int','Beechwood_1_int', 'Ihlen_1_int']
+    elif scenes_set == "unseen":
+        # scenes_counter = 7
+        scenes_succ = {'Pomaria_2_int': [[] for i in range(6)], 'Benevolence_2_int': [[] for i in range(6)],  'Benevolence_1_int': [[] for i in range(6)],  # noqa: E501
+                    'Wainscott_0_int': [[] for i in range(6)], 'Beechwood_0_int': [[] for i in range(6)], 'Merom_1_int': [[] for i in range(6)], 'Pomaria_1_int': [[] for i in range(6)]}
+        scenes_spl = {'Benevolence_1_int': [[] for i in range(6)], 'Pomaria_2_int': [[] for i in range(6)], 'Benevolence_2_int': [[] for i in range(6)],
+                    'Wainscott_0_int': [[] for i in range(6)], 'Beechwood_0_int': [[] for i in range(6)], 'Pomaria_1_int': [[] for i in range(6)], 'Merom_1_int': [[] for i in range(6)]}
+        scenes_steps_taken_succ = {'Benevolence_1_int': [[] for i in range(6)], 'Pomaria_2_int': [[] for i in range(6)], 'Benevolence_2_int': [
+            []]*6, 'Wainscott_0_int': [[] for i in range(6)], 'Beechwood_0_int': [[] for i in range(6)], 'Pomaria_1_int': [[] for i in range(6)], 'Merom_1_int': [[] for i in range(6)]}
+        scenes_steps_taken_no_succ = {'Benevolence_1_int': [[] for i in range(6)], 'Pomaria_2_int': [[] for i in range(6)], 'Benevolence_2_int': [
+            []]*6, 'Wainscott_0_int': [[] for i in range(6)], 'Beechwood_0_int': [[] for i in range(6)], 'Pomaria_1_int': [[] for i in range(6)], 'Merom_1_int': [[] for i in range(6)]}
+        scenes_steps_general = {'Benevolence_1_int': [[] for i in range(6)], 'Pomaria_2_int': [[] for i in range(6)], 'Benevolence_2_int': [
+            []]*6, 'Wainscott_0_int': [[] for i in range(6)], 'Beechwood_0_int': [[] for i in range(6)], 'Pomaria_1_int': [[] for i in range(6)], 'Merom_1_int': [[] for i in range(6)]}
+        test_scenes = ['Pomaria_2_int', 'Benevolence_2_int', 'Benevolence_1_int',
+                    'Wainscott_0_int', 'Beechwood_0_int', 'Merom_1_int', 'Pomaria_1_int']
+    else:
+        raise ValueError("Invalid scene set")
+
     SPL_sum = []
     SR_sum = []
 
@@ -130,13 +129,6 @@ def main():
 
     baseline_greedy = greedy_baseline()
     
-    method_eval = "greedy" #either greedy or policy
-    method = f"HIMOS_eval_{method_eval}" #arbitary name
-    seed = 22  # 22,42,64
-    det_policy = False
-    how_many_eps_per_sing_task = 25 
-    objects_find = 0
-    objects_find_max = 7
     wrong_commands = []
     ep_rew = 0
     discount_length_mean = []
