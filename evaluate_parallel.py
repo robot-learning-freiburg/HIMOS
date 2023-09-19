@@ -167,10 +167,10 @@ def main():
         f.close()
 
     result_refs = []
-    for scene_id in test_scenes:
+    for i, scene_id in enumerate(test_scenes):
         result_ref = evaluate_scene.remote(scene_id=scene_id, 
                                             method=method, 
-                                            seed=seed, 
+                                            seed=seed + 999*i, 
                                             objects_find_max=objects_find_max, 
                                             how_many_eps_per_sing_task=how_many_eps_per_sing_task, 
                                             det_policy=det_policy, 

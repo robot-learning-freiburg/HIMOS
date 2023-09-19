@@ -795,7 +795,7 @@ def explore(sem_map,map_size_,agent_pos, env, frontier_selection: str):
             frontier_idx = np.argmax(geometric_util)
             goal_position = frontier_centers[frontier_idx]
         else:
-            raise ValueError("Unknown cluster selection method: {}".format(cluster_selection))
+            raise ValueError("Unknown cluster selection method: {}".format(frontier_selection))
     else:
         goal_position = None
         
