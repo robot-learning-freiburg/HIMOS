@@ -5,8 +5,9 @@ import gc
 import time
 import ray
 import shutil
+import yaml
 
-from baselines.baseline1 import greedy_baseline
+from baselines.baseline1 import greedy_baseline, SGoLAM_baseline
 from evaluate import setup, set_determinism_eval, copy_changed_files
 
 
@@ -22,7 +23,14 @@ def evaluate_scene(scene_id: str, method: str, seed, objects_find_max: int, how_
     env, model_ll_pol, model_hl_pol, model, exploration_policy_steps = setup(scene_id, objects_find_unused, method)
     env.seed(seed)
     set_determinism_eval(seed)
-    baseline_greedy = greedy_baseline()
+    if method_eval == "greedy":
+        baseline = greedy_baseline()
+    elif method_eval == "sgolam":
+        baseline = SGoLAM_baseline()
+    elif method_eval == "policy":
+        pass
+    else:
+        raise ValueError(f"Invalid method_eval {method_eval}")
 
     tot_scene_ep = 0
     for objects_find in range(1, objects_find_max):
@@ -32,7 +40,7 @@ def evaluate_scene(scene_id: str, method: str, seed, objects_find_max: int, how_
             print(f"Starting episode {tot_scene_ep} in scene {scene_id}, {objects_find} objects, episode {_e + 1} of this task")
             obs = env.reset()
             
-            baseline_greedy.reset()
+            baseline.reset()
             initial_geo_dist = env.task.initial_geodesic_length
 
             agent_geo_dist_taken = 0
@@ -45,7 +53,7 @@ def evaluate_scene(scene_id: str, method: str, seed, objects_find_max: int, how_
                 if method_eval == "policy":
                     hl_action, _ = model_hl_pol.predict(obs, deterministic=det_policy)
                 else:
-                    hl_action = baseline_greedy.predict(env, obs)
+                    hl_action = baseline.predict(env, obs)
 
                 current_wrong_commands = env.wrong_command
                 if hl_action == 0:
@@ -117,13 +125,17 @@ def main():
     
     ray.init(num_cpus=60)
 
-    method_eval = "greedy"  # either greedy or policy
-    scenes_set = "unseen"
-    method = f"HIMOS_eval_{method_eval}_geometric_util_{scenes_set}"  #arbitary name
+    method_eval = "greedy"  # greedy / sgolam / policy
+    scenes_set = "seen"
     seed = 22  # 22,42,64
     det_policy = False
     how_many_eps_per_sing_task = 25
     objects_find_max = 7
+
+    config_filename = os.path.join('./', 'config_eval.yaml')
+    config_data = yaml.load(open(config_filename, "r"), Loader=yaml.FullLoader)
+    method = f"HIMOS_eval_{method_eval}_{config_data['frontier_selection']}_{config_data['exploration_policy_steps']}steps_{config_data['max_step']}maxsteps_strategyRandom_{scenes_set}"  #arbitary name
+
 
     if scenes_set == "seen":
         scenes_succ = {'Merom_0_int': [[] for i in range(6)],'Benevolence_0_int': [[] for i in range(6)],  'Pomaria_0_int': [[] for i in range(6)], 'Wainscott_1_int': [[] for i in range(6)],'Rs_int': [[] for i in range(6)],'Ihlen_0_int': [[] for i in range(6)], 'Beechwood_1_int': [[] for i in range(6)], 'Ihlen_1_int': [[] for i in range(6)]}
