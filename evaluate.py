@@ -16,7 +16,7 @@ from baselines.baseline1 import greedy_baseline
 
 
 
-def setup(scene_id, objects, method):
+def setup(scene_id, objects, method, hl_checkpoint):
     config_filename = os.path.join('./', 'config_eval.yaml')
     config_data = yaml.load(open(config_filename, "r"), Loader=yaml.FullLoader)
     
@@ -61,7 +61,7 @@ def setup(scene_id, objects, method):
                        policy_kwargs=policy_kwargs_HL, config_data=config_data)  
 
 
-    model_hl_pol.set_parameters("checkpoints/HIMOS_HLP/seed_2/last_model_3",
+    model_hl_pol.set_parameters(hl_checkpoint,
                                 exact_match=False) 
     
     model = GEN_POLICY(model_hl_pol, model_ll_pol, env, config=config_data, num_envs=1)
