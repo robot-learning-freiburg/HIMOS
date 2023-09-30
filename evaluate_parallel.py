@@ -12,7 +12,14 @@ from evaluate import setup, set_determinism_eval, copy_changed_files
 
 
 @ray.remote(num_cpus=12)
-def evaluate_scene(scene_id: str, method: str, seed, objects_find_max: int, how_many_eps_per_sing_task: int, det_policy: bool, method_eval: str):
+def evaluate_scene(scene_id: str, 
+                   method: str, 
+                   seed,
+                   objects_find_max: int,
+                   how_many_eps_per_sing_task: int,
+                   det_policy: bool,
+                   method_eval: str,
+                   hl_checkpoint: str):
     scenes_succ = {scene_id: [[] for i in range(6)]}
     scenes_spl = {scene_id: [[] for i in range(6)]}
     scenes_steps_taken_succ = {scene_id: [[] for i in range(6)]}
@@ -20,7 +27,7 @@ def evaluate_scene(scene_id: str, method: str, seed, objects_find_max: int, how_
     scenes_steps_taken_no_succ = {scene_id: [[] for i in range(6)]}
 
     objects_find_unused = 0
-    env, model_ll_pol, model_hl_pol, model, exploration_policy_steps = setup(scene_id, objects_find_unused, method)
+    env, model_ll_pol, model_hl_pol, model, exploration_policy_steps = setup(scene_id, objects_find_unused, method, hl_checkpoint=hl_checkpoint)
     env.seed(seed)
     set_determinism_eval(seed)
     if method_eval == "greedy":
@@ -131,6 +138,7 @@ def main():
     det_policy = False
     how_many_eps_per_sing_task = 25
     objects_find_max = 7
+    hl_checkpoint = "checkpoints/HIMOS_HLP/seed_2/last_model_3"
 
     config_filename = os.path.join('./', 'config_eval.yaml')
     config_data = yaml.load(open(config_filename, "r"), Loader=yaml.FullLoader)
@@ -186,7 +194,8 @@ def main():
                                             objects_find_max=objects_find_max, 
                                             how_many_eps_per_sing_task=how_many_eps_per_sing_task, 
                                             det_policy=det_policy, 
-                                            method_eval=method_eval)
+                                            method_eval=method_eval,
+                                            hl_checkpoint=hl_checkpoint)
         result_refs.append(result_ref)
         # time.sleep(10)
 
