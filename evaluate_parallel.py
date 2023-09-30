@@ -47,7 +47,8 @@ def evaluate_scene(scene_id: str,
             print(f"Starting episode {tot_scene_ep} in scene {scene_id}, {objects_find} objects, episode {_e + 1} of this task")
             obs = env.reset()
             
-            baseline.reset()
+            if method_eval != "policy":
+                baseline.reset()
             initial_geo_dist = env.task.initial_geodesic_length
 
             agent_geo_dist_taken = 0
