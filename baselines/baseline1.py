@@ -4,7 +4,7 @@ import numpy as np
 class greedy_baseline():
 	def __init__(self):
 		self.heuristic = "geodesic"
-		self.strategy = "shortest" # ("shortest","random")
+		self.strategy = "random" # ("shortest","random")
 		self.use_exploration_policy = True
 		self.use_frontier_algorithm = True
 		#set true for using SGOLAM scheme
@@ -91,4 +91,11 @@ class greedy_baseline():
 
 			return action
 
-			
+
+class SGoLAM_baseline(greedy_baseline):
+	def __init__(self):
+		super().__init__()
+		self.use_exploration_policy = False
+		self.use_frontier_algorithm = True
+		#set true for using SGOLAM scheme
+		self.use_sgolam_strategies = True

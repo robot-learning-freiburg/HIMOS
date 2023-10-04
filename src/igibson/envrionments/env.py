@@ -488,7 +488,6 @@ class Env(gym.Env):
         return collision, geo_dist
 
     def cabinet_action(self, ind):
-
         collision, geo_dist, not_at_goal_pos = drive_to_cabinet(
             self, ind, ignore_id=[self.task.cabinets[ind].get_body_ids()[0]])
         self.reset_variables_ll()
@@ -505,23 +504,15 @@ class Env(gym.Env):
             set_base_values_with_z(self.robots[0].get_body_ids()[0], [rob_pos[0],
                                                                       rob_pos[1], target_yaw], z=self.initial_pos_z_offset)
 
-            
-
         if collision:
             self.robots[0].tuck()
             self.robots[0].reset()
             self.robots[0].keep_still()
-
-
         else:
-
             # reject only the opening iteself.
             if np.random.uniform() < self.interaction_failure_prob or not_at_goal_pos:
                 return collision, 2
-
             else:
-
-                
                 # in the case of wrong segmentation or just failing, segment object manually with ad-hoc solution
                 if int(ind) in self.task.cabinet_target_dict:#self.task.wanted_objects[ind] == 1:
                     #the following target pos are essentially the cabinet spawn positions because plate pos are not needed here.
@@ -536,12 +527,10 @@ class Env(gym.Env):
                         self.task.wanted_objects[self.task.cabinet_target_dict[ind]] = 0
                         self.already_cabinet.append(int(ind))
                 else:
-                    
                     tr_ps = self.task.target_pos_list[int(ind)]
                     tr_ps = self.mapping.world2map(tr_ps)
                     self.global_map[int(tr_ps[1])-4:int(tr_ps[1])+4, int(tr_ps[0]) -
                                     4:int(tr_ps[0])+4] = self.mapping.cabinet_marked
-                
                 
                 self.cabinet_indices.append(ind)
                 
@@ -553,12 +542,10 @@ class Env(gym.Env):
         door_name = self.task.door_index_to_key[real_door_index]
         door_id = self.task.door_dict[door_name][0]
 
-
         reject_door_opening = False
 
         # orientations mapped to directions doors open.
         door_opens_towards = {"-2.0": 0, "0.0": 0, "-0.0": 0, "2.0": 1, "-3.0": 1, "3.0": 1, "1.0": 0, "-1.0": 0}
-        
 
         collision = True
         rob_pos = self.robots[0].base_link.get_position()[:2]
@@ -619,7 +606,6 @@ class Env(gym.Env):
             if True:
                 trials += 1
 
-            
                 self.robots[0].untuck()
                 plan = self.motion_arm_planner.plan_arm_push(
                     hit_pos.copy(), -np.array(hit_normal), ee_orientation.copy())
@@ -717,8 +703,6 @@ class Env(gym.Env):
                 set_base_values_with_z(self.robots[0].get_body_ids()[0], [rob_pos[0],
                                                                       rob_pos[1], target_yaw], z=self.initial_pos_z_offset)
 
-            
-
             hit_normal = self.task.offset_positions_door_knop[self.last_scene_id][door_name][1]
             # the orientation is arbitary here, therefore put None
             ee_orientation = None  
@@ -778,7 +762,6 @@ class Env(gym.Env):
         
 
     def door_action(self, ind, door_name, real_door_index, selected_color):
-        
         self.reset_variables_ll()
         self.robots[0].keep_still()
         collision, geo_dist, not_at_goal_pos, which_side = drive_to_selected_door(real_door_index, self)
@@ -803,7 +786,6 @@ class Env(gym.Env):
                 self.task.already_opened[door_name] = False
 
         else:
-
             if not not_at_goal_pos:
                 rob_pos = self.robots[0].base_link.get_position()[:2]
                 door_pos = self.task.door_dict[door_name][1][:2]
@@ -814,12 +796,9 @@ class Env(gym.Env):
                 set_base_values_with_z(self.robots[0].get_body_ids()[0], [rob_pos[0],
                                                                           rob_pos[1], target_yaw], z=self.initial_pos_z_offset)
 
-                
-
             # reject only the door opening iteself
             if np.random.uniform() < self.interaction_failure_prob or not_at_goal_pos:
                 reject_door_opening = True
-                
                 return collision, 2
             else:
                 _, open_iteration = self.scene.open_one_obj(door_id, mode="max")
@@ -967,7 +946,7 @@ class Env(gym.Env):
         sensors = self.get_sensor_obs()
 
         if self.add_frontier_exploration:
-            goal_position = explore(self.global_map, self.mapping.map_size[0], self.mapping.rob_pose)
+            goal_position = explore(self.global_map, self.mapping.map_size[0], self.mapping.rob_pose, self, frontier_selection=self.config["frontier_selection"])
 
             self.prev_frontier_point = goal_position
 

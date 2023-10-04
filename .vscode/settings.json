@@ -1,0 +1,14 @@
+{
+    "python.languageServer": "Pylance",
+    "python.linting.flake8Args": [
+        "--max-line-length=100",
+        "--ignore=E402",
+        "--extend-ignore=E203"
+    ],
+    "python.formatting.blackArgs": [
+        "--line-length=100"
+    ],
+    "python.analysis.extraPaths": [
+        "/opt/iGibson",
+    ],
+}

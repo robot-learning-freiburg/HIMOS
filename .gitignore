@@ -1,0 +1,4 @@
+*.pyc
+data/
+eval_results/
+nohup*
