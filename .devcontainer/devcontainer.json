@@ -5,10 +5,6 @@
 	"build": {
 		"context": "..",
 		"dockerfile": "Dockerfile",
-		"args": {
-			"RLGITUSER": "todo",
-			"RLGITPWD": "todo"
-		}
 	},
 	"containerEnv": {
 		"GITHUB_TOKEN": "${localEnv:GITHUB_TOKEN}",
@@ -31,8 +27,6 @@
 		"${localWorkspaceFolder}/data:/opt/iGibson/igibson/data:rw",
 		"--env",
 		"QT_X11_NO_MITSHM=1",
-		"--env",
-		"WANDB_API_KEY=todo",
 	],
 	"mounts": [
 		// "source=/usr/share/vulkan/icd.d/nvidia_icd.json,target=/etc/vulkan/icd.d/nvidia_icd.json,type=bind",
