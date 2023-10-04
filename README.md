@@ -27,7 +27,7 @@ To enable easy use and reproduction, we provide a docker container. To use this 
 To run the container, clone this repository, then run the following, replacing the paths where needed.
 ```
 docker pull dhonerkamp/himos
-docker run -it --gpus=all --rm --network=host --shm-size=120.0gb --env DISPLAY --volume /tmp/.X11-unix:/tmp/.11-unix:rw --volume ${localEnv:HOME}/.Xauthority:/root/.Xauthority:rw --volume ${dataFolder}:/opt/Gibson/igibson/data:rw --env QT_X11_NO_MITSHM=1 --volume ${localRepositoryFolder}:/workspaces/HIMOS
+docker run -it --gpus=all --rm --network=host --shm-size=120.0gb --env DISPLAY --volume /tmp/.X11-unix:/tmp/.11-unix:rw --volume ${localEnv:HOME}/.Xauthority:/root/.Xauthority:rw --volume ${dataFolder}:/opt/Gibson/igibson/data:rw --env QT_X11_NO_MITSHM=1 --volume ${localRepositoryFolder}:/workspaces/HIMOS dhonerkamp/himos bash
 ```
 
 ##### Visualisation
