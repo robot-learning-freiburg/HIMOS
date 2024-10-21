@@ -11,50 +11,15 @@ import numpy as np
 import cv2
 import yaml
 from hrl_models import CustomExtractorLL, CustomExtractorHL
-try:
-    import gym
-    import torch as th
-    import torch.nn as nn
+import gym
+import torch as th
+import torch.nn as nn
 
-    from src.exploration_policy.ppo_mod_disc import PPO as PPO_LL
-
-
-    from src.SB3.ppo import PPO
-    
-    from src.highlevel_policy.general_policy import GEN_POLICY
-
-    from src.highlevel_policy.vec_monitor_MOD import VecMonitor
-    from src.highlevel_policy.subproc_vec_env_HRL import SubprocVecEnv
-    
-
-	
-except ModuleNotFoundError:
-    print("stable-baselines3 is not installed. You would need to do: pip install stable-baselines3")
-    exit(1)
-
-
-"""
-Example training code using stable-baselines3 PPO for PointNav task.
-"""
-class SummaryWriterCallback(BaseCallback):
-
-    def _on_training_start(self):
-        self._log_freq = 1000  # log every 1000 calls
-
-        output_formats = self.logger.output_formats
-        self.low_level_pol = self.model.low_level
-        # Save reference to tensorboard formatter object
-        # note: the failure case (not formatter found) is not handled here, should be done with try/except.
-        self.tb_formatter = next(formatter for formatter in output_formats if isinstance(formatter, TensorBoardOutputFormat))
-
-    def _on_step(self) -> bool:
-
-        
-        self.tb_formatter.writer.add_scalar("rollout/ep_rew_mean_low", safe_mean([ep_info["r"] for ep_info in self.low_level_pol.ep_info_buffer]),self.low_level_pol.num_timesteps)
-        self.tb_formatter.writer.add_scalar("rollout/ep_len_mean_low", safe_mean([ep_info["l"] for ep_info in self.low_level_pol.ep_info_buffer]),self.low_level_pol.num_timesteps)
-        self.tb_formatter.writer.flush()
-
-
+from src.exploration_policy.ppo_mod_disc import PPO as PPO_LL
+from src.SB3.ppo import PPO
+from src.highlevel_policy.general_policy import GEN_POLICY
+from src.highlevel_policy.vec_monitor_MOD import VecMonitor
+from src.highlevel_policy.subproc_vec_env_HRL import SubprocVecEnv
 
 
 def main():
@@ -156,5 +121,7 @@ def main():
     save_model_callback = SaveModel(check_freq=n_steps, log_dir=model_log_dir,hrl=False)
 
     model.learn(11500000,callback=[save_model_callback])
+    
+
 if __name__ == "__main__":
     main()

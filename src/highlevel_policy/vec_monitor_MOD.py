@@ -7,7 +7,25 @@ import numpy as np
 #from src.highlevel_policy.base_vec_env import VecEnv, VecEnvObs, VecEnvStepReturn, VecEnvWrapper
 from stable_baselines3.common.vec_env.base_vec_env import VecEnv, VecEnvObs, VecEnvStepReturn, VecEnvWrapper
 
-class VecMonitor(VecEnvWrapper):
+
+class VecEnvWrapperMod(VecEnvWrapper):
+    """
+    Vectorized environment base class
+
+    :param venv: the vectorized environment to wrap
+    :param observation_space: the observation space (can be None to load from venv)
+    :param action_space: the action space (can be None to load from venv)
+    """
+    def step_async(self, actions: np.ndarray, indices=None) -> None:
+        if indices is None:
+            self.venv.step_async(actions)
+        else:
+            self.venv.step_async(actions,indices)
+
+
+
+
+class VecMonitor(VecEnvWrapperMod):
     """
     A vectorized monitor wrapper for *vectorized* Gym environments,
     it is used to record the episode reward, length, time and other data.
